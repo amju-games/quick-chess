@@ -7,10 +7,16 @@
 #include "gen_moves.h"
 #include "search.h"
 
-bool find_best_move(board& b, piece_colour pc, move* m)
+static const int MAX_DEPTH = 2;
+
+bool find_best_move_depth_first(int depth, evaluator& e, board& b, piece_colour pc, move* m)
 {
+  if (depth > MAX_DEPTH)
+    return true;
+
   // Find all moves for the given piece colour
-  move movelist[500];  // there can't be this many moves, right?
+  // https://www.chess.com/forum/view/fun-with-chess/what-chess-position-has-the-most-number-of-possible-moves
+  move movelist[200];  
   int n = 0;
   gen_moves(b, pc, movelist, n);
 
@@ -26,7 +32,7 @@ bool find_best_move(board& b, piece_colour pc, move* m)
 
     //b.print();
 
-    int score = eval_material().calc_score(b, pc);
+    int score = e.calc_score(b, pc);
     if (score > alpha)
     {
       alpha = score;
@@ -43,5 +49,10 @@ bool find_best_move(board& b, piece_colour pc, move* m)
   *m = best_move; 
   std::cout << " Best score: " << alpha << "\n";
   return true;
+}
+
+bool find_best_move(evaluator& e, board& b, piece_colour pc, move* m)
+{
+  return find_best_move_depth_first(0, e, b, pc, m);
 }
 

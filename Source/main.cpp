@@ -8,20 +8,26 @@
 int main()
 {
   board b;
+  b.print();
+
+  evaluator e;
+  e.add(new eval_material);
+  e.add(new eval_control_centre);
 
   piece_colour pc = WHITE_PIECE;
-  for (int k = 0; k < 4; k++)
+  for (int k = 0; k < 50; k++)
   {
-    b.print();
-
     move m;
-    find_best_move(b, pc, &m);
+    find_best_move(e, b, pc, &m);
 
     // Do move
     b.do_move(m);
+    b.print();
 
     // Switch player
     pc = (pc == WHITE_PIECE) ? BLACK_PIECE : WHITE_PIECE;
+
+    std::cin.get();
   }
 }
 

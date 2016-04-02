@@ -7,35 +7,43 @@
 #include <vector>
 #include "board.h"
 
+// Base class for position evalutors
 class eval
 {
 public:
-  eval() : weight(1) {}
+  eval() : m_weight(1) {}
   virtual ~eval() {}
   virtual int calc_score(const board& b, piece_colour pc) = 0;
+  int get_weight() const { return m_weight; }
 
 protected:
-  int weight;
+  int m_weight;
 };
 
+// Board evaluator: total score is the weighted sum of individual position
+//  evaluators, derived from eval.
 class evaluator
 {
 public:
-  evaluator();
   virtual int calc_score(const board& b, piece_colour pc);
+  void add(eval* e);
 
 private:
   std::vector<eval*> m_evals;
 };
 
+// Evaluates a board for material. This is the most important consideration.
 class eval_material : public eval
+{
+public:
+  eval_material();
+  virtual int calc_score(const board& b, piece_colour pc) override;
+};
+
+// Evaluate control of the centre of the board.
+class eval_control_centre : public eval
 {
 public:
   virtual int calc_score(const board& b, piece_colour pc) override;
 };
 
-class eval_control_centre : public evaluator
-{
-public:
-  virtual int calc_score(const board& b, piece_colour pc) override;
-};
