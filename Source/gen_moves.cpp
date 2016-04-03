@@ -1,4 +1,15 @@
+// -----------------------------------------------------------------------------
+// Quick chess - Jason Colman 2016 - just a fun project to keep my hand in.
+// -----------------------------------------------------------------------------
+
 #include "gen_moves.h"
+
+void pawn_moves(piece_colour c, const row_col& pos, const board& b, move* movelist, int& num_moves);
+void rook_moves(piece_colour c, const row_col& pos, const board& b, move* movelist, int& num_moves);
+void knight_moves(piece_colour c, const row_col& pos, const board& b, move* movelist, int& num_moves);
+void bishop_moves(piece_colour c, const row_col& pos, const board& b, move* movelist, int& num_moves);
+void queen_moves(piece_colour c, const row_col& pos, const board& b, move* movelist, int& num_moves);
+void king_moves(piece_colour c, const row_col& pos, const board& b, move* movelist, int& num_moves);
 
 void gen_moves(const board& b, piece_colour pc, move* movelist, int& num_moves)
 {
@@ -53,8 +64,6 @@ bool try_opponent_only(
   if (is_empty(s))
     return false;
 
-////std::cout << "Generating pawn move from " << pos << " to " << newpos << "\n";
-
   movelist[num_moves] = move(pos, newpos);
   num_moves++;
   return true;
@@ -75,8 +84,6 @@ bool try_empty_only(
   
   if (!is_empty(s))
     return false;
-
-////std::cout << "Generating pawn move from " << pos << " to " << newpos << "\n";
 
   movelist[num_moves] = move(pos, newpos);
   num_moves++;
@@ -115,8 +122,6 @@ bool try_square(
   square s = b.get(newpos);
   if (get_piece_colour(s) == pc)
     return false; // piece on destination square is the same as our colour
-
-////std::cout << "Generating move from " << pos << " to " << newpos << "\n";
 
   movelist[num_moves] = move(pos, newpos);
   num_moves++;

@@ -6,6 +6,9 @@
 #include <iostream>
 #include "board.h"
 
+// For testing, set up a simple position
+//#define SIMPLE_BOARD_DEBUG
+
 board::board() 
 { 
   reset(); 
@@ -29,6 +32,18 @@ void board::reset()
 
   for (int i = 0; i < 8; i++)
   {
+#ifdef SIMPLE_BOARD_DEBUG
+    // TEST only - simple board, with just a few pawns. Or you could set up
+    //  some other test position here.
+    for (int j = 0; j < 8; j++)
+      set(row_col(j, i), EMPTY);
+    const int NUM_PAWNS = 8;
+    if (i < NUM_PAWNS) set(row_col(1, i), W_PAWN);
+    if (i < NUM_PAWNS) set(row_col(6, i), B_PAWN);
+    continue;
+#endif
+
+    // Standard initial position
     set(row_col(0, i), INITIAL_POSITIONS[i]);
     set(row_col(1, i), W_PAWN);
     for (int j = 2; j < 6; j++)
