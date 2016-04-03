@@ -13,7 +13,7 @@
 
 #define INF 9999999
 
-static const int MAX_DEPTH = 1;
+static const int MAX_DEPTH = 3;
 
 static std::string name(piece_colour pc)
 {
@@ -31,16 +31,20 @@ static piece_colour flip(piece_colour pc)
 }
 
 // Simple depth first minimax, no alpha beta yet
-// Return score for current position of board b for player pc
+// Return score for current position of board b with respect to the player
+//  'eval_wrt'. 
 int minimax(
   int depth, 
-  evaluator& e, piece_colour eval_wrt, board& b, piece_colour pc, move* m
+  evaluator& e, piece_colour eval_wrt, board& b, piece_colour pc, move* m,
+  int alpha, int beta,
+  int& num_evals
   )
 {
   // TODO Also terminate recursion if game is over
   if (depth > MAX_DEPTH)
   {
     // Evaluate pos
+    num_evals++;
     int score = e.calc_score(b, eval_wrt);
     return score; 
   }
@@ -51,70 +55,68 @@ int minimax(
   int n = 0;
   gen_moves(b, pc, movelist, n);
 
-//  const int N = 2;// TODO TEMP TEST
-//  if (n > N) n = N; // TODO TEMP TEST
-
-  // Evaluate each move, always wrt the player whose move we are searching for - not
-  //  the player at this depth.
   move best_move;
-  int alpha = -INF;
-  int beta = INF;
-  for (int i = 0; i < n; i++)
+
+  // Min or max?
+  if (pc == eval_wrt) 
   {
-    move& m = movelist[i];
-
-#ifdef _DEBUG
-    std::cout << sp(depth) << "Depth " << depth << ": Trying move: " << m << " for " << name(pc) << "\n";
-#endif
-
-    b.do_move(m);
-
-    // Min or max?
-    if (pc == eval_wrt) //(depth & 1) == 0)
+    // Maximising
+    int best = -INF;
+    for (int i = 0; i < n; i++)
     {
-      int score = minimax(depth + 1, e, eval_wrt, b, flip(pc), nullptr);
+      move& m = movelist[i];
 
-#ifdef _DEBUG
-std::cout << sp(depth) << "(Max) Depth: " << depth << " move " << m << " scores " << score <<  " wrt " << name(eval_wrt);
-#endif
+      b.do_move(m);
+      int score = minimax(depth + 1, e, eval_wrt, b, flip(pc), nullptr, alpha, beta, num_evals);
+      b.undo_move();
 
-      // Player ply: goal is to maximise 
-      if (score > alpha)
+      if (score > best)
       {
-#ifdef _DEBUG
-std::cout << " - BEST!";
-#endif
+        best = score;
+//        best_move = m;
+      } 
 
-        alpha = score;
+      if (best > alpha)
+      {
+        alpha = best;
         best_move = m;
       }
-#ifdef _DEBUG
-std::cout << "\n";
-#endif
+      if (beta <= alpha)
+      {
+//std::cout << "Wow, alpha cut off\n";
+        break;
+      }
     }
-    else //if ((depth & 1) == 1)
+  }
+  else 
+  {
+    // Minimising
+    int best = INF;
+    for (int i = 0; i < n; i++)
     {
-      int score = minimax(depth + 1, e, eval_wrt, b, flip(pc), nullptr);
+      move& m = movelist[i];
 
-#ifdef _DEBUG
-std::cout << sp(depth) << "(Min) Depth: " << depth << " move " << m << " scores " << score <<  " wrt " << name(eval_wrt);
-#endif
+      b.do_move(m);
+      int score = minimax(depth + 1, e, eval_wrt, b, flip(pc), nullptr, alpha, beta, num_evals);
+      b.undo_move();
 
-      // Opponent ply: goal is to minimise beta
-      if (score < beta)
+      if (score < best)
       {
-#ifdef _DEBUG
-std::cout << " - BEST!";
-#endif
+        best = score;
+//        best_move = m;
+      } 
 
-        beta = score;
+      if (best < beta)
+      {
+        beta = best;
         best_move = m;
       }
-#ifdef _DEBUG
-std::cout << "\n";
-#endif
+      if (beta <= alpha)
+      {
+//std::cout << "Wow, alpha cut off\n";
+        break;
+      }
     } 
-    b.undo_move();
   }
 
 #ifdef _DEBUG
@@ -130,7 +132,10 @@ bool find_best_move(evaluator& e, board& b, piece_colour pc, move* m)
 {
   int alpha = -INF;
   int beta = INF;
-  bool ret = minimax(0, e, pc, b, pc, m);
+  int num_evals = 0;
+  bool ret = minimax(0, e, pc, b, pc, m, alpha, beta, num_evals);
+
+std::cout << num_evals << " positions evaluated. Max depth: " << MAX_DEPTH << "\n";
  
 ////std::cout << "Alpha: " << alpha << ", beta: " << beta << "\n";
 

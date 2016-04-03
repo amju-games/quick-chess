@@ -1,0 +1,31 @@
+197742 positions evaluated.
+1. g1-f3
+
+233999 positions evaluated.
+1. ...f7-f6
+
+213511 positions evaluated.
+2. d2-d4
+
+372125 positions evaluated.
+2. ...c7-c6
+
+425184 positions evaluated.
+3. c1-f4
+
+571296 positions evaluated.
+3. ...g7-g5
+
+620533 positions evaluated.
+4. f4-b8
+
+501712 positions evaluated.
+4. ...a8-b8
+
+358772 positions evaluated.
+5. h2-h4
+
+436280 positions evaluated.
+5. ...d8-a5
+
+
