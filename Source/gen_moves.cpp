@@ -2,6 +2,7 @@
 // Quick chess - Jason Colman 2016 - just a fun project to keep my hand in.
 // -----------------------------------------------------------------------------
 
+#include <assert.h>
 #include "gen_moves.h"
 
 void pawn_moves(piece_colour c, const row_col& pos, const board& b, move* movelist, int& num_moves);
@@ -24,6 +25,9 @@ void gen_moves(const board& b, piece_colour pc, move* movelist, int& num_moves)
          piece_type pt = get_piece_type(s);
          switch (pt)
          {
+         case NONE:
+           assert(0); // only here if square contains one of our pieces
+           break;
          case PAWN:
            pawn_moves(pc, rc, b, movelist, num_moves);
            break; 
@@ -64,7 +68,7 @@ bool try_opponent_only(
   if (is_empty(s))
     return false;
 
-  movelist[num_moves] = move(pos, newpos);
+  movelist[num_moves] = move(pos, newpos, b);
   num_moves++;
   return true;
 }
@@ -85,7 +89,7 @@ bool try_empty_only(
   if (!is_empty(s))
     return false;
 
-  movelist[num_moves] = move(pos, newpos);
+  movelist[num_moves] = move(pos, newpos, b);
   num_moves++;
   return true;
 }
@@ -93,7 +97,7 @@ bool try_empty_only(
 void pawn_moves(piece_colour pc, const row_col& pos, const board& b, move* movelist, int& num_moves)
 {
   int fwd = (pc == WHITE_PIECE) ? 1 : -1; // pawn forward direction
-  int first = (pc == WHITE_PIECE) ? 1 : 6;
+  int first = (pc == WHITE_PIECE) ? 1 : 6; // start row for pawns of this colour
  
   if (try_empty_only(pc, pos, pos + row_col(fwd, 0), b, movelist, num_moves) &&
       pos.row == first) // on start row, so can also move 2 squares
@@ -123,7 +127,7 @@ bool try_square(
   if (get_piece_colour(s) == pc)
     return false; // piece on destination square is the same as our colour
 
-  movelist[num_moves] = move(pos, newpos);
+  movelist[num_moves] = move(pos, newpos, b);
   num_moves++;
 
   return is_empty(s);

@@ -5,20 +5,33 @@
 #include "board.h"
 #include "move.h"
 
-std::ostream& operator<<(std::ostream& os, move& m)
+move::move(const row_col& f, const row_col& t, const board& b) :
+  from(f), to(t), from_sq(b.get(f)), to_sq(b.get(t))
 {
-  // TODO put contents of from and to squares in move type
-  return os << m.from << "-" << m.to;
 }
 
-void move::print(const board& b)
+std::ostream& operator<<(std::ostream& os, move& m)
 {
-  square f = b.get(from);
-  square t = b.get(to);
+  if (get_piece_colour(m.from_sq) == BLACK_PIECE)
+    os << "...";
 
-  if (is_empty(t))
-    std::cout << from << "-" << to << "\n";
+  char PIECES[] = ".pRNBKQ";
+
+  int pt = (int)get_piece_type(m.from_sq);
+  if (pt > (int)PAWN)
+    os << PIECES[pt]; 
+
+  os << m.from;
+
+  if (is_empty(m.to_sq))
+    os << "-";
   else
-    std::cout << from << "x" << to << "\n";
+    os << "x";
+
+  pt = (int)get_piece_type(m.to_sq);
+  if (pt > (int)PAWN)
+    os << PIECES[pt];
+
+  return os << m.to;
 }
 

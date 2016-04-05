@@ -6,17 +6,21 @@
 
 #include <iostream>
 #include "row_col.h"
+#include "square.h"
 
 class board;
 
 struct move
 {
-  move() {}
-  move(const row_col& f, const row_col& t) : from(f), to(t) {}
+  move() : from_sq(EMPTY), to_sq(EMPTY) {}
 
-  void print(const board& b);
+  move(const row_col& f, const row_col& t, const board& b);
 
+  // From/to coords
   row_col from, to;
+
+  // Contents of from and to squares (before this move is performed)
+  square from_sq, to_sq;
 };
 
 std::ostream& operator<<(std::ostream& os, move& m);

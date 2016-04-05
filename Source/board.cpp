@@ -8,6 +8,8 @@
 
 // For testing, set up a simple position
 //#define SIMPLE_BOARD_DEBUG
+// Number of pawns for each player in simple position
+#define NUM_PAWNS 2 
 
 board::board() 
 { 
@@ -37,7 +39,6 @@ void board::reset()
     //  some other test position here.
     for (int j = 0; j < 8; j++)
       set(row_col(j, i), EMPTY);
-    const int NUM_PAWNS = 8;
     if (i < NUM_PAWNS) set(row_col(1, i), W_PAWN);
     if (i < NUM_PAWNS) set(row_col(6, i), B_PAWN);
     continue;

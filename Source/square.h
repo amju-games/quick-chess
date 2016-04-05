@@ -7,12 +7,20 @@
 // Piece types
 enum piece_type
 {
+  NONE =   0x00,
   PAWN =   0x01,
   ROOK =   0x02,
   KNIGHT = 0x03,
   BISHOP = 0x04,
   KING =   0x05,
   QUEEN =  0x06
+};
+
+// Bit positions for square contents 
+enum
+{
+  BLACK = 0x10,
+  MOVED = 0x20,
 };
 
 // All possible values for a square on the board, including around the edge

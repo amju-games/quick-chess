@@ -13,7 +13,7 @@
 
 #define INF 9999999
 
-static const int MAX_DEPTH = 3;
+static const int MAX_DEPTH = 2;
 
 static std::string name(piece_colour pc)
 {
@@ -40,7 +40,7 @@ struct line
   move moves[MAX_DEPTH + 1];
 };
 
-// Simple depth first minimax, no alpha beta yet
+// Minimax with alpha-beta pruning
 // Return score for current position of board b with respect to the player
 //  'eval_wrt'. 
 int minimax(

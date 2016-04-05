@@ -23,8 +23,8 @@ int main()
     move m;
     find_best_move(e, b, pc, &m);
 
-    // Print move text, prefixed by move number, and "..." if it's black's move.
-    std::cout << k / 2 + 1 << ". " << ((k & 1) ? "..." : "") << m << "\n";
+    // Print move text, prefixed by move number
+    std::cout << k / 2 + 1 << ". " << m << "\n";
 
     // Do move
     b.do_move(m);
