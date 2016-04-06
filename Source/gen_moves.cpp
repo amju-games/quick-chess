@@ -201,3 +201,25 @@ void king_moves(piece_colour pc, const row_col& pos, const board& b, move* movel
   try_square(pc, pos, pos + row_col( 1,  1), b, movelist, num_moves);
 }
 
+// Return true if two moves have the same 'from' and 'to' squares - 
+//  i.e. the moves are the same, if you ignore other info which a 
+//  move can have.
+static bool same_squares(const move& m1, const move& m2)
+{
+  return (m1.from == m2.from) && (m1.to == m2.to);
+}
+
+bool is_legal(const board& b, piece_colour pc, const move& m)
+{
+  move movelist[200];
+  int n = 0;
+  gen_moves(b, pc, movelist, n);
+
+  for (int i = 0; i < n; i++)
+  {
+    if (same_squares(m, movelist[i]))
+      return true;
+  }
+  return false;
+}
+

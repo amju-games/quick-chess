@@ -17,3 +17,6 @@
 // Not using vector here to avoid memory allocations during search.
 void gen_moves(const board& b, piece_colour pc, move* movelist, int& num_moves);
 
+// Check if move m is one of the moves generated for the given board/player
+bool is_legal(const board& b, piece_colour pc, const move& m);
+ 

@@ -14,6 +14,11 @@ struct row_col
   bool is_out_of_bounds() const { return row > 7 || row < 0 || col > 7 || col < 0; }
 };
 
+inline bool operator==(const row_col& rc1, const row_col& rc2)
+{
+  return rc1.row == rc2.row && rc1.col == rc2.col;
+}
+
 inline std::ostream& operator<<(std::ostream& os, const row_col& rc)
 {
   return os << char(rc.col + 'a') << rc.row + 1;
