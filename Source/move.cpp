@@ -6,7 +6,7 @@
 #include "move.h"
 
 move::move(const row_col& f, const row_col& t, const board& b) :
-  from(f), to(t), from_sq(b.get(f)), to_sq(b.get(t))
+  from(f), to(t), from_sq(b.get(f)), to_sq(b.get(t)), score(0)
 {
 }
 
