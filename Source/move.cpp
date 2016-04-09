@@ -10,7 +10,7 @@ move::move(const row_col& f, const row_col& t, const board& b) :
 {
 }
 
-std::ostream& operator<<(std::ostream& os, move& m)
+std::ostream& operator<<(std::ostream& os, const move& m)
 {
   if (get_piece_colour(m.from_sq) == BLACK_PIECE)
     os << "...";

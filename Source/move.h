@@ -25,5 +25,5 @@ struct move
   int score; // used to sort moves to improve alpha-beta
 };
 
-std::ostream& operator<<(std::ostream& os, move& m);
+std::ostream& operator<<(std::ostream& os, const move& m);
 
