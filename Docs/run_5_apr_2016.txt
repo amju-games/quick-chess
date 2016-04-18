@@ -1,0 +1,324 @@
+strawberry-3:Source jay$ ./a.out 
+8  R  N  B  Q  K  B  N  R 
+7  P  P  P  P  P  P  P  P 
+6                         
+5                         
+4                         
+3                         
+2  p  p  p  p  p  p  p  p 
+1  r  n  b  q  k  b  n  r 
+   a  b  c  d  e  f  g  h
+Max depth: 2. 2763 positions evaluated. PV: d2-d4, ...d7-d5, e2-e4
+1. d2-d4
+8  R  N  B  Q  K  B  N  R 
+7  P  P  P  P  P  P  P  P 
+6                         
+5                         
+4           p             
+3                         
+2  p  p  p     p  p  p  p 
+1  r  n  b  q  k  b  n  r 
+   a  b  c  d  e  f  g  h
+
+Max depth: 2. 2052 positions evaluated. PV: ...d7-d5, Bc1-e3, ...e7-e5
+1. ...d7-d5
+8  R  N  B  Q  K  B  N  R 
+7  P  P  P     P  P  P  P 
+6                         
+5           P             
+4           p             
+3                         
+2  p  p  p     p  p  p  p 
+1  r  n  b  q  k  b  n  r 
+   a  b  c  d  e  f  g  h
+
+Max depth: 2. 1374 positions evaluated. PV: Nb1-c3, ...e7-e5, Nc3xd5
+2. Nb1-c3
+8  R  N  B  Q  K  B  N  R 
+7  P  P  P     P  P  P  P 
+6                         
+5           P             
+4           p             
+3        n                
+2  p  p  p     p  p  p  p 
+1  r     b  q  k  b  n  r 
+   a  b  c  d  e  f  g  h
+
+Max depth: 2. 2731 positions evaluated. PV: ...Nb8-c6, e2-e4, ...Nc6xd4
+2. ...Nb8-c6
+8  R     B  Q  K  B  N  R 
+7  P  P  P     P  P  P  P 
+6        N                
+5           P             
+4           p             
+3        n                
+2  p  p  p     p  p  p  p 
+1  r     b  q  k  b  n  r 
+   a  b  c  d  e  f  g  h
+
+Max depth: 2. 7612 positions evaluated. PV: Bc1-g5, ...Bc8-e6, Nc3xd5
+3. Bc1-g5
+8  R     B  Q  K  B  N  R 
+7  P  P  P     P  P  P  P 
+6        N                
+5           P        b    
+4           p             
+3        n                
+2  p  p  p     p  p  p  p 
+1  r        q  k  b  n  r 
+   a  b  c  d  e  f  g  h
+
+Max depth: 2. 5986 positions evaluated. PV: ...f7-f6, Bg5-f4, ...Nc6xd4
+3. ...f7-f6
+8  R     B  Q  K  B  N  R 
+7  P  P  P     P     P  P 
+6        N        P       
+5           P        b    
+4           p             
+3        n                
+2  p  p  p     p  p  p  p 
+1  r        q  k  b  n  r 
+   a  b  c  d  e  f  g  h
+
+Max depth: 2. 7137 positions evaluated. PV: Bg5-f4, ...e7-e5, Nc3xd5
+4. Bg5-f4
+8  R     B  Q  K  B  N  R 
+7  P  P  P     P     P  P 
+6        N        P       
+5           P             
+4           p     b       
+3        n                
+2  p  p  p     p  p  p  p 
+1  r        q  k  b  n  r 
+   a  b  c  d  e  f  g  h
+
+Max depth: 2. 3761 positions evaluated. PV: ...g7-g5, Bf4-e3, ...Nc6xd4
+4. ...g7-g5
+8  R     B  Q  K  B  N  R 
+7  P  P  P     P        P 
+6        N        P       
+5           P        P    
+4           p     b       
+3        n                
+2  p  p  p     p  p  p  p 
+1  r        q  k  b  n  r 
+   a  b  c  d  e  f  g  h
+
+Max depth: 2. 4391 positions evaluated. PV: Bf4-e3, ...e7-e5, Nc3xd5
+5. Bf4-e3
+8  R     B  Q  K  B  N  R 
+7  P  P  P     P        P 
+6        N        P       
+5           P        P    
+4           p             
+3        n     b          
+2  p  p  p     p  p  p  p 
+1  r        q  k  b  n  r 
+   a  b  c  d  e  f  g  h
+
+Max depth: 2. 3455 positions evaluated. PV: ...Bc8-e6, Qd1-d3, ...Nc6xd4
+5. ...Bc8-e6
+8  R        Q  K  B  N  R 
+7  P  P  P     P        P 
+6        N     B  P       
+5           P        P    
+4           p             
+3        n     b          
+2  p  p  p     p  p  p  p 
+1  r        q  k  b  n  r 
+   a  b  c  d  e  f  g  h
+
+Max depth: 2. 5689 positions evaluated. PV: Qd1-d3, ...Qd8-d6, Nc3xd5
+6. Qd1-d3
+8  R        Q  K  B  N  R 
+7  P  P  P     P        P 
+6        N     B  P       
+5           P        P    
+4           p             
+3        n  q  b          
+2  p  p  p     p  p  p  p 
+1  r           k  b  n  r 
+   a  b  c  d  e  f  g  h
+
+Max depth: 2. 4874 positions evaluated. PV: ...Qd8-d6, f2-f4, ...Nc6xd4
+6. ...Qd8-d6
+8  R           K  B  N  R 
+7  P  P  P     P        P 
+6        N  Q  B  P       
+5           P        P    
+4           p             
+3        n  q  b          
+2  p  p  p     p  p  p  p 
+1  r           k  b  n  r 
+   a  b  c  d  e  f  g  h
+
+Max depth: 2. 13114 positions evaluated. PV: Qd3-b5, ...f6-f5, Qb5xNc6
+7. Qd3-b5
+8  R           K  B  N  R 
+7  P  P  P     P        P 
+6        N  Q  B  P       
+5     q     P        P    
+4           p             
+3        n     b          
+2  p  p  p     p  p  p  p 
+1  r           k  b  n  r 
+   a  b  c  d  e  f  g  h
+
+Max depth: 2. 11600 positions evaluated. PV: ...b7-b6, f2-f4, ...Nc6xd4
+7. ...b7-b6
+8  R           K  B  N  R 
+7  P     P     P        P 
+6     P  N  Q  B  P       
+5     q     P        P    
+4           p             
+3        n     b          
+2  p  p  p     p  p  p  p 
+1  r           k  b  n  r 
+   a  b  c  d  e  f  g  h
+
+Max depth: 2. 13684 positions evaluated. PV: Ng1-f3, ...f6-f5, Qb5xNc6
+8. Ng1-f3
+8  R           K  B  N  R 
+7  P     P     P        P 
+6     P  N  Q  B  P       
+5     q     P        P    
+4           p             
+3        n     b  n       
+2  p  p  p     p  p  p  p 
+1  r           k  b     r 
+   a  b  c  d  e  f  g  h
+
+Max depth: 2. 5004 positions evaluated. PV: ...g5-g4, Nf3-d2, ...Nc6xd4
+8. ...g5-g4
+8  R           K  B  N  R 
+7  P     P     P        P 
+6     P  N  Q  B  P       
+5     q     P             
+4           p        P    
+3        n     b  n       
+2  p  p  p     p  p  p  p 
+1  r           k  b     r 
+   a  b  c  d  e  f  g  h
+
+Max depth: 2. 8301 positions evaluated. PV: Nf3-d2, ...f6-f5, Qb5xNc6
+9. Nf3-d2
+8  R           K  B  N  R 
+7  P     P     P        P 
+6     P  N  Q  B  P       
+5     q     P             
+4           p        P    
+3        n     b          
+2  p  p  p  n  p  p  p  p 
+1  r           k  b     r 
+   a  b  c  d  e  f  g  h
+
+Max depth: 2. 7928 positions evaluated. PV: ...f6-f5, f2-f4, ...Nc6xd4
+9. ...f6-f5
+8  R           K  B  N  R 
+7  P     P     P        P 
+6     P  N  Q  B          
+5     q     P     P       
+4           p        P    
+3        n     b          
+2  p  p  p  n  p  p  p  p 
+1  r           k  b     r 
+   a  b  c  d  e  f  g  h
+
+Max depth: 2. 12086 positions evaluated. PV: f2-f4, ...Ng8-f6, Qb5xNc6
+10. f2-f4
+8  R           K  B  N  R 
+7  P     P     P        P 
+6     P  N  Q  B          
+5     q     P     P       
+4           p     p  P    
+3        n     b          
+2  p  p  p  n  p     p  p 
+1  r           k  b     r 
+   a  b  c  d  e  f  g  h
+
+Max depth: 2. 7231 positions evaluated. PV: ...Ng8-f6, Qb5-d3, ...Nc6xd4
+10. ...Ng8-f6
+8  R           K  B     R 
+7  P     P     P        P 
+6     P  N  Q  B  N       
+5     q     P     P       
+4           p     p  P    
+3        n     b          
+2  p  p  p  n  p     p  p 
+1  r           k  b     r 
+   a  b  c  d  e  f  g  h
+
+Max depth: 2. 11475 positions evaluated. PV: b2-b4, ...Ra8-d8, Qb5xNc6
+11. b2-b4
+8  R           K  B     R 
+7  P     P     P        P 
+6     P  N  Q  B  N       
+5     q     P     P       
+4     p     p     p  P    
+3        n     b          
+2  p     p  n  p     p  p 
+1  r           k  b     r 
+   a  b  c  d  e  f  g  h
+
+Max depth: 2. 7395 positions evaluated. PV: ...Ra8-d8, Qb5-d3, ...Nc6xd4
+11. ...Ra8-d8
+8           R  K  B     R 
+7  P     P     P        P 
+6     P  N  Q  B  N       
+5     q     P     P       
+4     p     p     p  P    
+3        n     b          
+2  p     p  n  p     p  p 
+1  r           k  b     r 
+   a  b  c  d  e  f  g  h
+
+Max depth: 2. 8469 positions evaluated. PV: Ra1-d1, ...Rd8-d7, Qb5xNc6
+12. Ra1-d1
+8           R  K  B     R 
+7  P     P     P        P 
+6     P  N  Q  B  N       
+5     q     P     P       
+4     p     p     p  P    
+3        n     b          
+2  p     p  n  p     p  p 
+1           r  k  b     r 
+   a  b  c  d  e  f  g  h
+
+Max depth: 2. 7738 positions evaluated. PV: ...Rd8-d7, Qb5-d3, ...Nc6xd4
+12. ...Rd8-d7
+8              K  B     R 
+7  P     P  R  P        P 
+6     P  N  Q  B  N       
+5     q     P     P       
+4     p     p     p  P    
+3        n     b          
+2  p     p  n  p     p  p 
+1           r  k  b     r 
+   a  b  c  d  e  f  g  h
+
+Max depth: 2. 6830 positions evaluated. PV: a2-a4, ...a7-a5, Qb5xNc6
+13. a2-a4
+8              K  B     R 
+7  P     P  R  P        P 
+6     P  N  Q  B  N       
+5     q     P     P       
+4  p  p     p     p  P    
+3        n     b          
+2        p  n  p     p  p 
+1           r  k  b     r 
+   a  b  c  d  e  f  g  h
+
+Max depth: 2. 2896 positions evaluated. PV: ...Nc6xb4, h2-h4, ...Qd6xf4
+13. ...Nc6xb4
+8              K  B     R 
+7  P     P  R  P        P 
+6     P     Q  B  N       
+5     q     P     P       
+4  p  N     p     p  P    
+3        n     b          
+2        p  n  p     p  p 
+1           r  k  b     r 
+   a  b  c  d  e  f  g  h
+^C
+strawberry-3:Source jay$ 
+

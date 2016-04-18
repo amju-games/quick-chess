@@ -1,0 +1,25 @@
+Play - will make moves that leave K in check
+I.e. some moves are illegal but they are not detected as such when gnerated in
+ the search.
+
+Find check mates in tree, assign score based on depth so we go for the earliest 
+Hmm, should be relatively easy to find check. Then do more costly mate test..?
+
+
+Castling, e.p.
+
+Pawn promotion
+
+Sort moves to optimise alpha-beta
+
+Iterative deepening
+
+Better evaluation
+
+
+Move sorting:
+ - For check/mate testing, having king-capturing moves at the front is great.
+ - For searching too.
+ - So when we generate moves, evaluate them and sort..? Then don't evaluate again, just look up the score in the move object. 
+
+
