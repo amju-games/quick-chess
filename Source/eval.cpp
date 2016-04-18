@@ -1,3 +1,7 @@
+// -----------------------------------------------------------------------------
+// Quick chess - Jason Colman 2016 - just a fun project to keep my hand in.
+// -----------------------------------------------------------------------------
+
 #include <assert.h>
 #include "eval.h"
 
@@ -34,17 +38,6 @@ int get_centre_control_score(int i, int j)
     2, 4, 8,  16, 16, 8,  4, 2,
     1, 2, 4,  8,  8,  4,  2, 1,
     0, 1, 2,  4,  4,  2,  1, 0,
-
-/*
-    0, 1, 2, 3, 3, 2, 1, 0,
-    1, 2, 3, 4, 4, 3, 2, 1,
-    2, 3, 4, 5, 5, 4, 3, 2,
-    3, 4, 5, 6, 6, 5, 4, 3,
-    3, 4, 5, 6, 6, 5, 4, 3,
-    2, 3, 4, 5, 5, 4, 3, 2,
-    1, 2, 3, 4, 4, 3, 2, 1,
-    0, 1, 2, 3, 3, 2, 1, 0,
-*/
   };
   return SCORES[n];
 }
@@ -59,12 +52,10 @@ int eval_control_centre::calc_score(const board& b, piece_colour pc)
       square s = b.get(row_col(i, j));
       if (pc == get_piece_colour(s))
       {
-//std::cout << "e.c.c: " << row_col(i, j) << " score: " << get_centre_control_score(i, j) << "\n";
         total += get_centre_control_score(i, j);
       }
       else if (!is_empty(s))
       {
-//std::cout << "e.c.c: " << row_col(i, j) << " score: " << get_centre_control_score(i, j) << "\n";
         total -= get_centre_control_score(i, j);
       }
     }
