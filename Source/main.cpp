@@ -2,11 +2,15 @@
 // Quick chess - Jason Colman 2016 - just a fun project to keep my hand in.
 // -----------------------------------------------------------------------------
 
+// To build:
+//  clang *.cpp -lstdc++ -std=c++11
+
 #include <iostream>
 #include "board.h"
 #include "eval.h"
 #include "gen_moves.h"
 #include "search.h"
+#include "square.h"
 
 void help()
 {
@@ -30,21 +34,31 @@ void player_move(int& k, board& b, piece_colour& pc, const std::string& move_str
   }
   
   b.do_move(m);
-  std::cout << k / 2 + 1 << ". " << m << "\n";
-  b.print();
-      
-  k++;
-  // Switch player
-  pc = (pc == WHITE_PIECE) ? BLACK_PIECE : WHITE_PIECE;
-}
 
-void play(int k, evaluator& e, board& b, piece_colour pc)
+  if (can_take_opponent_king(b, flip(pc)))
+  {
+    std::cout << "No good, your king is in trouble!\n";
+    b.undo_move();
+    return;
+  }
+
+  bool check = can_take_opponent_king(b, pc);
+  std::cout << k / 2 + 1 << ". " << m << (check ? "+" : "") << "\n";
+  b.print();
+  k++;
+  pc = flip(pc);
+}
+  
+void play(int& k, evaluator& e, board& b, piece_colour& pc)
 {
   move m;
   find_best_move(e, b, pc, &m);
   b.do_move(m);
-  std::cout << k / 2 + 1 << ". " << m << "\n";
+  bool check = can_take_opponent_king(b, pc);
+  std::cout << k / 2 + 1 << ". " << m << (check ? "+" : "") << "\n";
   b.print();
+  k++;
+  pc = flip(pc);
 }
 
 int main()
@@ -60,19 +74,25 @@ int main()
   int k = 0;
   while (true)
   {
-    std::cout << (pc == WHITE_PIECE ? "White" : "Black") << " to play.\n";
-    std::cout << "Enter a move like this 'e2e4', or h for help...\n";
+    bool is_mate = false;
+    if (mate_test(b, pc))
+    {
+      std::cout << "Check mate!\n";
+      is_mate = true;
+    }
+    else
+    {
+      std::cout << (pc == WHITE_PIECE ? "White" : "Black") << " to play.\n";
+      std::cout << "Enter a move like this 'e2e4', or h for help...\n";
+    }
     std::string command;
     std::getline(std::cin, command);
 
-    if (command.empty())
+    if (command.empty() && !is_mate)
     {
       play(k, e, b, pc);
-      k++;
-      // Switch player
-      pc = (pc == WHITE_PIECE) ? BLACK_PIECE : WHITE_PIECE;
     }
-    else if (command.size() == 4)
+    else if (command.size() == 4 && !is_mate)
     {
       player_move(k, b, pc, command);
     }
@@ -89,7 +109,7 @@ int main()
         ////std::cout << k / 2 + 1 << ". " << m << "\n";
         b.print();
         // Flip player
-        pc = (pc == WHITE_PIECE) ? BLACK_PIECE : WHITE_PIECE;
+        pc = flip(pc); ////(pc == WHITE_PIECE) ? BLACK_PIECE : WHITE_PIECE;
       }
       else
       {

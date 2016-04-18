@@ -19,4 +19,10 @@ void gen_moves(const board& b, piece_colour pc, move* movelist, int& num_moves);
 
 // Check if move m is one of the moves generated for the given board/player
 bool is_legal(const board& b, piece_colour pc, const move& m);
- 
+
+// Return true if player pc can take opponent king
+bool can_take_opponent_king(const board& b, piece_colour pc); 
+
+// Return true if player pc is check mated
+bool mate_test(board& b, piece_colour pc);
+
