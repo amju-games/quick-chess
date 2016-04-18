@@ -49,6 +49,8 @@ enum piece_colour
   NO_PIECE
 };
 
+inline piece_colour flip(piece_colour pc) { return (pc == WHITE_PIECE) ? BLACK_PIECE : WHITE_PIECE; }
+
 inline bool is_empty(square s) { return s == EMPTY || s == BORDER; }
 inline bool is_white_piece(square s) { return s >= W_PAWN && s <= W_QUEEN; }
 inline bool is_black_piece(square s) { return s >= B_PAWN && s <= B_QUEEN; }

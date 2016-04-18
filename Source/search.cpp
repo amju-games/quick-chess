@@ -25,11 +25,6 @@ static std::string sp(int d)
   return std::string(d * 4, ' ');
 }
 
-static piece_colour flip(piece_colour pc)
-{
-  return (pc == WHITE_PIECE) ? BLACK_PIECE : WHITE_PIECE;
-}
-
 // Collect the principal variation as we search.
 // http://brucemo.com/compchess/programming/pv.htm
 struct line
@@ -149,8 +144,7 @@ bool find_best_move(evaluator& e, board& b, piece_colour pc, move* m)
   line pv; // principal variation
   bool ret = minimax(0, e, pc, b, pc, pv, alpha, beta, num_evals);
 
-std::cout << "Max depth: " << MAX_DEPTH << "\n";
-
+  std::cout << "Max depth: " << MAX_DEPTH << ". ";
   std::cout << num_evals << " positions evaluated. ";
 
   // Show the principal variation
@@ -159,8 +153,6 @@ std::cout << "Max depth: " << MAX_DEPTH << "\n";
   {
     std::cout << pv.moves[i] << (i < MAX_DEPTH ? ", " : "\n");
   }
-
-std::cout << "Alpha: " << alpha << ", beta: " << beta << "\n";
 
   *m = pv.moves[0];
   return ret;
