@@ -223,3 +223,41 @@ bool is_legal(const board& b, piece_colour pc, const move& m)
   return false;
 }
 
+bool can_take_opponent_king(const board& b, piece_colour pc)
+{
+  move movelist[200];
+  int n = 0;
+  gen_moves(b, pc, movelist, n);
+
+  for (int i = 0; i < n; i++)
+  {
+    const move& m = movelist[i];
+    piece_type pt = get_piece_type(m.to_sq);
+
+    if (pt == KING)
+      return true;
+  }
+
+  return false;
+}
+
+bool mate_test(board& b, piece_colour pc)
+{
+  move movelist[200];
+  int n = 0;
+  gen_moves(b, pc, movelist, n);
+
+  piece_colour opp = flip(pc);
+  for (int i = 0; i < n; i++)
+  {
+    const move& m = movelist[i];
+    b.do_move(m);
+    bool tk = can_take_opponent_king(b, opp);
+    b.undo_move();
+    if (!tk)
+      return false; // we found a position where king can't be taken
+  }
+  // No move found where the opponent cannot take the king: this is 
+  //  check mate!
+  return true;
+}
