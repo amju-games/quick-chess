@@ -63,6 +63,10 @@ int minimax(
   move movelist[200];  
   int n = 0;
   gen_moves(b, pc, movelist, n);
+ 
+  // Evaluate the moves and sort, to improve alpha-beta pruning. Evaluation is wrt the player 
+  //  whose turn (ply) it currently is.
+  eval_and_sort(e, b, pc, movelist, n);
 
   move best_move;
 

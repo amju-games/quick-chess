@@ -2,7 +2,9 @@
 // Quick chess - Jason Colman 2016 - just a fun project to keep my hand in.
 // -----------------------------------------------------------------------------
 
-#include <assert.h>
+#include <algorithm>
+#include <cassert>
+#include "eval.h"
 #include "gen_moves.h"
 
 void pawn_moves(piece_colour c, const row_col& pos, const board& b, move* movelist, int& num_moves);
@@ -11,6 +13,44 @@ void knight_moves(piece_colour c, const row_col& pos, const board& b, move* move
 void bishop_moves(piece_colour c, const row_col& pos, const board& b, move* movelist, int& num_moves);
 void queen_moves(piece_colour c, const row_col& pos, const board& b, move* movelist, int& num_moves);
 void king_moves(piece_colour c, const row_col& pos, const board& b, move* movelist, int& num_moves);
+
+// Sorter type, so we can sort an array of moves
+struct move_sorter
+{
+public:
+  bool operator()(const move& m1, const move& m2)
+  {
+    // gt, not lt, so we get the scores in descending order. Not lte as equal scores should
+    //  not return true.
+    return m1.score > m2.score;
+  }
+};
+
+void eval_and_sort(
+  const evaluator& e, board& b, piece_colour pc, 
+  move* movelist, int num_moves)
+{
+  for (int i = 0; i < num_moves; i++)
+  {
+    move& m = movelist[i];
+    // TODO have the idea of score at a particular depth
+    b.do_move(m);
+    m.score = e.calc_score(b, pc);
+    b.undo_move();
+  }
+
+  std::sort(movelist, movelist + num_moves, move_sorter());
+
+#ifdef SHOW_SORTED_MOVES_LIST
+  std::cout << "Sorted moves list: ";
+  for (int i = 0; i < num_moves; i++)
+  {
+    move& m = movelist[i];
+    std::cout << m << " (" << m.score << ") ";
+  }
+  std::cout << "\n";
+#endif
+}
 
 void gen_moves(const board& b, piece_colour pc, move* movelist, int& num_moves)
 {
@@ -209,7 +249,7 @@ static bool same_squares(const move& m1, const move& m2)
   return (m1.from == m2.from) && (m1.to == m2.to);
 }
 
-bool is_legal(const board& b, piece_colour pc, const move& m)
+bool is_possibly_legal(const board& b, piece_colour pc, const move& m)
 {
   move movelist[200];
   int n = 0;
