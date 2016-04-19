@@ -22,6 +22,7 @@ struct move
   // Contents of from and to squares (before this move is performed)
   square from_sq, to_sq;
 
+  // TODO have the idea of score at a particular depth
   int score; // used to sort moves to improve alpha-beta
 };
 
