@@ -27,7 +27,7 @@ void player_move(int& k, board& b, piece_colour& pc, const std::string& move_str
   move m(row_col(r1, c1), row_col(r2, c2), b);
 
   // Check legal move
-  if (!is_legal(b, pc, m))
+  if (!is_possibly_legal(b, pc, m))
   {
     std::cout << "I don't think that's a legal move here!\n";
     return;
