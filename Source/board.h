@@ -32,9 +32,8 @@ private:
   // Calc index into 1D array from (row, col)
   int index(const row_col& rc) const;
 
-  // Board includes border of 2 squares all around, so instead of 8*8,
-  //  the board size is 12*12.
-  static const int NUM_SQUARES = 12 * 12;
+  // No border, just an 8*8 array of squares. 
+  static const int NUM_SQUARES = 8 * 8;
   square m_squares[NUM_SQUARES];
 
   undo_stack m_undo_stack;

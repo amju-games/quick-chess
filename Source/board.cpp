@@ -18,9 +18,6 @@ board::board()
 
 void board::reset()
 {
-  for (int i = 0; i < NUM_SQUARES; i++)
-    m_squares[i] = BORDER;
-   
   square INITIAL_POSITIONS[8] = { 
     W_ROOK,
     W_KNIGHT,
@@ -50,7 +47,7 @@ void board::reset()
     for (int j = 2; j < 6; j++)
       set(row_col(j, i), EMPTY);
     set(row_col(6, i), B_PAWN);
-    set(row_col(7, i), (square)((int)INITIAL_POSITIONS[i] + 0x10));
+    set(row_col(7, i), (square)((int)INITIAL_POSITIONS[i] | BLACK));
   }
 }
   
@@ -117,9 +114,9 @@ int board::index(const row_col& rc) const
 {
   assert(rc.row >= 0);
   assert(rc.col >= 0);
-  assert(rc.row < 12);
-  assert(rc.col < 12);
+  assert(rc.row < 8);
+  assert(rc.col < 8);
 
-  return (rc.row + 2) * 12 + rc.col + 2;
+  return rc.row * 8 + rc.col;
 }
 
