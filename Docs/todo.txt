@@ -10,16 +10,23 @@ Castling, e.p.
 
 Pawn promotion
 
-Sort moves to optimise alpha-beta
+DONE: Sort moves to optimise alpha-beta
 
 Iterative deepening
+ - So we can show best move found so far, which will change as we search deeper.
+ - Store scores for board positions if we are evaluating it at a deeper depth than before.
 
 Better evaluation
-
+ - Threatening opp king
+ - Pawn positions - how far forward, in triangle formation 
+ - King safety, castling is good
 
 Move sorting:
  - For check/mate testing, having king-capturing moves at the front is great.
  - For searching too.
  - So when we generate moves, evaluate them and sort..? Then don't evaluate again, just look up the score in the move object. 
+
+Table of positions with score at a depth
+ - Board (hash?) is key; value is (depth, player, score). If we find a score for that position at a greater depth, we update the score.
 
 
