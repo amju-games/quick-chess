@@ -5,7 +5,7 @@
 #include <assert.h>
 #include "eval.h"
 
-int evaluator::calc_score(const board& b, piece_colour pc)
+int evaluator::calc_score(const board& b, piece_colour pc) const
 {
   int total = 0;
   for (auto e : m_evals)
@@ -20,7 +20,7 @@ void evaluator::add(eval* e)
   m_evals.push_back(e);
 }
 
-int get_centre_control_score(int i, int j)
+static int get_centre_control_score(int i, int j)
 {
   int n = i * 8 + j;
 
@@ -42,7 +42,7 @@ int get_centre_control_score(int i, int j)
   return SCORES[n];
 }
 
-int eval_control_centre::calc_score(const board& b, piece_colour pc)
+int eval_control_centre::calc_score(const board& b, piece_colour pc) const
 {
   int total = 0;
   for (int i = 0; i < 8; i++)
@@ -68,7 +68,7 @@ eval_material::eval_material()
   m_weight = 100;
 }
 
-int eval_material::calc_score(const board& b, piece_colour pc)
+int eval_material::calc_score(const board& b, piece_colour pc) const
 {
   // TODO allow these to be tuned?
   int MATERIAL_SCORE[] = { 0, 1, 5, 3, 3, 1000, 9 };

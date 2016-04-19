@@ -13,7 +13,7 @@ class eval
 public:
   eval() : m_weight(1) {}
   virtual ~eval() {}
-  virtual int calc_score(const board& b, piece_colour pc) = 0;
+  virtual int calc_score(const board& b, piece_colour pc) const = 0;
   int get_weight() const { return m_weight; }
 
 protected:
@@ -25,7 +25,7 @@ protected:
 class evaluator
 {
 public:
-  virtual int calc_score(const board& b, piece_colour pc);
+  int calc_score(const board& b, piece_colour pc) const;
   void add(eval* e);
 
 private:
@@ -37,13 +37,13 @@ class eval_material : public eval
 {
 public:
   eval_material();
-  virtual int calc_score(const board& b, piece_colour pc) override;
+  virtual int calc_score(const board& b, piece_colour pc) const override;
 };
 
 // Evaluate control of the centre of the board.
 class eval_control_centre : public eval
 {
 public:
-  virtual int calc_score(const board& b, piece_colour pc) override;
+  virtual int calc_score(const board& b, piece_colour pc) const override;
 };
 
