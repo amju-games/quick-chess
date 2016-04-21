@@ -13,7 +13,7 @@
 
 #define INF 9999999
 
-static const int MAX_DEPTH = 2;
+static const int MAX_DEPTH = 10;
 
 static std::string name(piece_colour pc)
 {
@@ -47,7 +47,7 @@ int minimax(
   )
 {
   // TODO Also terminate recursion if game is over
-  if (depth > MAX_DEPTH)
+  if (depth == 0)
   {
     // Evaluate pos
     pv.n = 0;
@@ -79,7 +79,7 @@ int minimax(
       move& m = movelist[i];
 
       b.do_move(m);
-      int score = minimax(depth + 1, e, eval_wrt, b, flip(pc), this_line, alpha, beta, num_evals);
+      int score = minimax(depth - 1, e, eval_wrt, b, flip(pc), this_line, alpha, beta, num_evals);
       b.undo_move();
 
       if (score > alpha)
@@ -108,7 +108,7 @@ int minimax(
       move& m = movelist[i];
 
       b.do_move(m);
-      int score = minimax(depth + 1, e, eval_wrt, b, flip(pc), this_line, alpha, beta, num_evals);
+      int score = minimax(depth - 1, e, eval_wrt, b, flip(pc), this_line, alpha, beta, num_evals);
       b.undo_move();
 
       if (score < beta)
@@ -140,25 +140,40 @@ std::cout << sp(depth) << "Depth " << depth << ", Setting move at depth " << dep
   return (pc == eval_wrt) ? alpha : beta;
 }
 
-bool find_best_move(evaluator& e, board& b, piece_colour pc, move* m)
+bool find_best_move(int max_depth, evaluator& e, board& b, piece_colour pc, move* m)
 {
-  int alpha = -INF;
-  int beta = INF;
+  bool ret = false;
+
+  // Number of positions evaluated in total
   int num_evals = 0;
-  line pv; // principal variation
-  bool ret = minimax(0, e, pc, b, pc, pv, alpha, beta, num_evals);
 
-  std::cout << "Max depth: " << MAX_DEPTH << ". ";
-  std::cout << num_evals << " positions evaluated. ";
+  // Iterative deepening. Increase the max depth by 1 each time, so we search deeper.
+  // TODO We should be able to interrupt this, or time out.
+ 
+  // Cap max_depth at real absolute maximum
+  max_depth = std::min(max_depth, MAX_DEPTH);
+  std::cout << "Max depth: " << max_depth << ".\n";
 
-  // Show the principal variation
-  std::cout << "PV: ";
-  for (int i = 0; i <= MAX_DEPTH; i++)
+  for (int depth = 1; depth <= max_depth; depth++)
   {
-    std::cout << pv.moves[i] << (i < MAX_DEPTH ? ", " : "\n");
-  }
+    std::cout << "Depth " << depth << ": ";
 
-  *m = pv.moves[0];
+    int alpha = -INF;
+    int beta = INF;
+    line pv; // principal variation at this depth
+    ret = minimax(depth, e, pc, b, pc, pv, alpha, beta, num_evals);
+
+    std::cout << num_evals << " positions evaluated. ";
+
+    // Show the principal variation
+    std::cout << "PV: ";
+    for (int i = 0; i < depth; i++)
+    {
+      std::cout << pv.moves[i] << (i < (depth - 1) ? ", " : "\n");
+    }
+
+    *m = pv.moves[0];
+  }
   return ret;
 }
 

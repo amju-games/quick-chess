@@ -52,7 +52,11 @@ void player_move(int& k, board& b, piece_colour& pc, const std::string& move_str
 void play(int& k, evaluator& e, board& b, piece_colour& pc)
 {
   move m;
-  find_best_move(e, b, pc, &m);
+
+  // TODO TEMP TEST
+  int max_depth = 5;
+  
+  find_best_move(max_depth, e, b, pc, &m);
   b.do_move(m);
   bool check = can_take_opponent_king(b, pc);
   std::cout << k / 2 + 1 << ". " << m << (check ? "+" : "") << "\n";

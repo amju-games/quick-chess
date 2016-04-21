@@ -1,6 +1,11 @@
+Result from find_best_move is an int (best score) -- is being coerced into a bool, wtf?
+
 Play - will make moves that leave K in check
 I.e. some moves are illegal but they are not detected as such when gnerated in
  the search.
+
+PV can contain moves like QxK. We have to prune these lines, as they are not legal, and give
+ a super low/high score to the position leading to that move.
 
 Find check mates in tree, assign score based on depth so we go for the earliest 
 Hmm, should be relatively easy to find check. Then do more costly mate test..?
@@ -13,12 +18,13 @@ Pawn promotion
 DONE: Sort moves to optimise alpha-beta
 
 Iterative deepening
+ - Only useful if we can interrupt. Also would be good to use opp thinking time - so make searching a task which can be run on a worker thread
  - So we can show best move found so far, which will change as we search deeper.
  - Store scores for board positions if we are evaluating it at a deeper depth than before.
 
 Better evaluation
  - Threatening opp king
- - Pawn positions - how far forward, in triangle formation 
+ - Pawn positions - how far forward (towards promotion); in triangle formation 
  - King safety, castling is good
 
 Move sorting:
