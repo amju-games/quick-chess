@@ -8,11 +8,17 @@
 #include "gen_moves.h"
 #include "search.h"
 
+#define YES_USE_THREADS
+
 // Prints lots of messages!
 //#define _DEBUG
 
+// Starting values for alpha and beta
 #define INF 9999999
 
+// For allocating arrays where each element represents one ply. Currently 
+//  searching 10 plies deep would take ages so is a safe max value.
+//  (The search space is ~36**10 positions!)
 static const int MAX_DEPTH = 10;
 
 static std::string name(piece_colour pc)
@@ -20,13 +26,19 @@ static std::string name(piece_colour pc)
   return (pc == WHITE_PIECE) ? "white" : "black";
 }
 
+// Make a string of d * 4 spaces, used to indent the debug output according to depth.
 static std::string sp(int d)
 {
   return std::string(d * 4, ' ');
 }
 
-// Collect the principal variation as we search.
-// http://brucemo.com/compchess/programming/pv.htm
+// We collect the principal variation as we search.
+// This uses the approach from http://brucemo.com/compchess/programming/pv.htm.
+
+// This type represents one line, i.e. one sequence of moves (plies) from the 
+//  current position to some max look-ahead depth. The principal variation is
+//  the line we get if both players play optimally - but this is skewed by the
+//  'horizon effect' of having a max depth.
 struct line
 {
   line() : n(0) {}
@@ -35,10 +47,14 @@ struct line
   move moves[MAX_DEPTH + 1];
 };
 
+searcher::searcher() : m_max_depth(1), m_pc(WHITE_PIECE)
+{
+}
+
 // Minimax with alpha-beta pruning
 // Return score for current position of board b with respect to the player
 //  'eval_wrt'. 
-int minimax(
+int searcher::minimax(
   int depth, 
   evaluator& e, piece_colour eval_wrt, board& b, piece_colour pc, 
   line& pv,
@@ -58,8 +74,9 @@ int minimax(
 
   line this_line;
 
-  // Find all moves for the given piece colour
-  // https://www.chess.com/forum/view/fun-with-chess/what-chess-position-has-the-most-number-of-possible-moves
+  // Find all moves for the given piece colour. It looks like about 120 is the maximum.
+  // https://www.chess.com/forum/view/fun-with-chess/
+  //  what-chess-position-has-the-most-number-of-possible-moves
   move movelist[200];  
   int n = 0;
   gen_moves(b, pc, movelist, n);
@@ -86,9 +103,6 @@ int minimax(
       {
         alpha = score;
         best_move = m;
-//moves[depth] = best_move; 
-//std::cout << sp(depth) << "Depth " << depth << ", Setting move at depth " << depth << " to " << best_move << "\n";
-
         pv.moves[0] = m;
         memcpy(pv.moves + 1, this_line.moves, this_line.n * sizeof(move));
         pv.n = this_line.n + 1;
@@ -115,9 +129,6 @@ int minimax(
       {
         beta = score;
         best_move = m;
-//moves[depth] = best_move; 
-//std::cout << sp(depth) << "Depth " << depth << ", Setting move at depth " << depth << " to " << best_move << "\n";
-
         pv.moves[0] = m;
         memcpy(pv.moves + 1, this_line.moves, this_line.n * sizeof(move));
         pv.n = this_line.n + 1;
@@ -131,16 +142,15 @@ int minimax(
 
 #ifdef _DEBUG
   std::cout << sp(depth) << "Best move: " << best_move << " for " << name(pc) << "\n";
-std::cout << sp(depth) << "Depth " << depth << ", Setting move at depth " << depth << " to " << best_move << "\n";
-
-//pv.moves[depth] = best_move; 
+  std::cout << sp(depth) << "Depth " << depth << ", Setting move at depth " << 
+    depth << " to " << best_move << "\n";
 
 #endif
 
   return (pc == eval_wrt) ? alpha : beta;
 }
 
-bool find_best_move(int max_depth, evaluator& e, board& b, piece_colour pc, move* m)
+bool searcher::find_best_move() ////int max_depth, evaluator& e, board& b, piece_colour pc, move* m)
 {
   bool ret = false;
 
@@ -148,32 +158,60 @@ bool find_best_move(int max_depth, evaluator& e, board& b, piece_colour pc, move
   int num_evals = 0;
 
   // Iterative deepening. Increase the max depth by 1 each time, so we search deeper.
-  // TODO We should be able to interrupt this, or time out.
+  // If running as a worker thread, we can stop the search by setting m_stopped.
  
   // Cap max_depth at real absolute maximum
-  max_depth = std::min(max_depth, MAX_DEPTH);
-  std::cout << "Max depth: " << max_depth << ".\n";
+  m_max_depth = std::min(m_max_depth, MAX_DEPTH);
+  std::cout << "Max depth: " << m_max_depth << ".\n";
 
-  for (int depth = 1; depth <= max_depth; depth++)
+  for (int depth = 1; depth <= m_max_depth; depth++)
   {
-    std::cout << "Depth " << depth << ": ";
-
     int alpha = -INF;
     int beta = INF;
     line pv; // principal variation at this depth
-    ret = minimax(depth, e, pc, b, pc, pv, alpha, beta, num_evals);
+    ret = minimax(depth, m_eval, m_pc, m_board, m_pc, pv, alpha, beta, num_evals);
 
+    std::cout << "Depth " << depth << ": ";
     std::cout << num_evals << " positions evaluated. ";
+    std::cout << "PV: ";
 
     // Show the principal variation
-    std::cout << "PV: ";
     for (int i = 0; i < depth; i++)
     {
       std::cout << pv.moves[i] << (i < (depth - 1) ? ", " : "\n");
     }
 
-    *m = pv.moves[0];
+    // Lock and set best move member variable
+    std::lock_guard<std::mutex> lock(m_mutex);
+    m_best_move_so_far = pv.moves[0];
   }
   return ret;
+}
+
+void searcher::start_search(int max_depth, const evaluator& e, const board& b, piece_colour pc)
+{
+  m_max_depth = max_depth;
+  m_eval = e;
+  m_board = b;
+  m_pc = pc;
+
+#ifdef YES_USE_THREADS
+  start(); // Executes work() on another thread
+#else
+  // No-thread version for testing 
+  work();
+#endif
+}
+
+move searcher::get_result()
+{
+  std::lock_guard<std::mutex> lock(m_mutex);
+  return m_best_move_so_far;
+}
+
+void searcher::work()
+{
+  std::cout << "Working...\n"; 
+  find_best_move(); 
 }
 
