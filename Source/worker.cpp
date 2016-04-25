@@ -2,21 +2,25 @@
 // Quick chess - Jason Colman 2016 - just a fun project to keep my hand in.
 // -----------------------------------------------------------------------------
 
+#include <iostream>
 #include "worker.h"
 
 static void* thread_func(worker* w)
 {
+  std::cout << "Started thread func!\n";
+
   w->work();
   return nullptr;
 }
 
-worker::worker() : m_thread(thread_func, this), m_stopped(false)
+worker::worker() : m_stopped(false)
 {
 }
 
 void worker::start()
 {
-  m_thread.detach();
+  m_thread = std::thread(thread_func, this);
+//  m_thread.detach(); // ?
 }
 
 void worker::stop()
