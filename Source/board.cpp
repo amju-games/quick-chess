@@ -107,9 +107,16 @@ void board::print() const
 #ifdef YES_COLOURS
       // Set bold, foreground, background colours
       std::cout << "\E[1m\E[" << fg << "m\E[" << bg << "m"; 
-#endif
-
       std::cout << " " << (char)SQUARE_CHAR[s] << " "; 
+#else
+      const char BLACK_SQ = ':';
+      // No colours, so draw black squares with ascii art
+      bool sq_is_black = ((i & 1) != (j & 1));
+      char c = sq_is_black ? BLACK_SQ : ' '; // colon for black sq
+      char d = SQUARE_CHAR[s];
+      d = (d == ' ' && sq_is_black ? BLACK_SQ : d); 
+      std::cout << c << d << c;
+#endif
     }
 
 #ifdef YES_COLOURS
