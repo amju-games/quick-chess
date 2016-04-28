@@ -165,9 +165,6 @@ bool searcher::find_best_move() ////int max_depth, evaluator& e, board& b, piece
 {
   bool ret = false;
 
-  // Number of positions evaluated in total
-  int num_evals = 0;
-
   // Iterative deepening. Increase the max depth by 1 each time, so we search deeper.
   // If running as a worker thread, we can stop the search by setting m_stopped.
  
@@ -177,6 +174,9 @@ bool searcher::find_best_move() ////int max_depth, evaluator& e, board& b, piece
 
   for (int depth = 1; depth <= m_max_depth; depth++)
   {
+    // Number of positions evaluated at this depth
+    int num_evals = 0;
+
     int alpha = -INF;
     int beta = INF;
     line pv; // principal variation at this depth
