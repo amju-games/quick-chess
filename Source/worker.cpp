@@ -7,9 +7,8 @@
 
 static void* thread_func(worker* w)
 {
-  std::cout << "Started thread func!\n";
-
   w->work();
+  w->finished();
   return nullptr;
 }
 

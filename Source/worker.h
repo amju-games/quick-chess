@@ -17,6 +17,7 @@ public:
   worker();
   virtual ~worker() {}
   virtual void work() = 0;
+  virtual void finished() {}
   void start();
   void stop();
 
