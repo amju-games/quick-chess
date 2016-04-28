@@ -11,6 +11,10 @@
 // Number of pawns for each player in simple position
 #define NUM_PAWNS 2 
 
+#ifndef WIN32
+#define YES_COLOURS
+#endif
+
 board::board() 
 { 
   reset(); 
@@ -86,7 +90,7 @@ void board::print() const
 
   for (int i = 0; i < 8; i++)
   {
-    printf("%d ", 8 - i);
+    std::cout << 8 - i << " "; // row (rank) number 
     for (int j = 0; j < 8; j++)
     {
       square s = get(row_col(7 - i, j)); // so row 1 at bottom
@@ -100,14 +104,21 @@ void board::print() const
       if (is_white_piece(s))
         fg = 36;
 
+#ifdef YES_COLOURS
       // Set bold, foreground, background colours
-      printf("\E[1m\E[%dm\E[%dm", fg, bg);
+      std::cout << "\E[1m\E[" << fg << "m\E[" << bg << "m"; 
+#endif
 
-      printf(" %c ", SQUARE_CHAR[s]);
+      std::cout << " " << (char)SQUARE_CHAR[s] << " "; 
     }
-    printf("\E[0m\n"); // reset colours
+
+#ifdef YES_COLOURS
+    std::cout << "\E[0m\n"; // reset colours
+#else 
+    std::cout << "\n";
+#endif
   }
-  printf("   a  b  c  d  e  f  g  h\n");
+  std::cout << "   a  b  c  d  e  f  g  h\n";
 }
 
 int board::index(const row_col& rc) const
