@@ -16,6 +16,7 @@ class searcher : public worker
 {
 public:
   searcher();
+  ~searcher();
 
   // Start search using iterative deepening. The search happens on a worker 
   //  thread. Call get_result() to get best result found so far.

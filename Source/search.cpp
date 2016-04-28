@@ -51,6 +51,11 @@ searcher::searcher() : m_max_depth(1), m_pc(WHITE_PIECE)
 {
 }
 
+searcher::~searcher()
+{
+  // TODO Join if joinable, to prevent termination. See EMC++ Item 37
+}
+
 // Minimax with alpha-beta pruning
 // Return score for current position of board b with respect to the player
 //  'eval_wrt'. 
@@ -62,6 +67,12 @@ int searcher::minimax(
   int& num_evals
   )
 {
+  // We might be running on a thread, and should now stop.
+  if (m_stopped)
+  {
+    return 0;
+  }
+
   // TODO Also terminate recursion if game is over
   if (depth == 0)
   {
@@ -172,18 +183,28 @@ bool searcher::find_best_move() ////int max_depth, evaluator& e, board& b, piece
     ret = minimax(depth, m_eval, m_pc, m_board, m_pc, pv, alpha, beta, num_evals);
 
     std::cout << "Depth " << depth << ": ";
-    std::cout << num_evals << " positions evaluated. ";
-    std::cout << "PV: ";
+    std::cout << num_evals << " positions evaluated.\n";
 
-    // Show the principal variation
-    for (int i = 0; i < depth; i++)
+    // We might be running on a thread, and should now stop.
+    if (m_stopped)
     {
-      std::cout << pv.moves[i] << (i < (depth - 1) ? ", " : "\n");
+      // Don't set best move so far, as if we were stopped, we didn't properly
+      //  evaluate it.
+      return ret;
     }
+    else
+    {
+      // Show the principal variation
+      std::cout << "PV: ";
+      for (int i = 0; i < depth; i++)
+      {
+        std::cout << pv.moves[i] << (i < (depth - 1) ? ", " : "\n");
+      }
 
-    // Lock and set best move member variable
-    std::lock_guard<std::mutex> lock(m_mutex);
-    m_best_move_so_far = pv.moves[0];
+      // Lock and set best move member variable
+      std::lock_guard<std::mutex> lock(m_mutex);
+      m_best_move_so_far = pv.moves[0];
+    }
   }
   return ret;
 }

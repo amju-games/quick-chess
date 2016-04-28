@@ -57,12 +57,16 @@ void game::play(int& k, evaluator& e, board& b, piece_colour& pc)
   searcher s;
   s.start_search(max_depth, e, b, pc);
   // Wait for user to hit a key or for s to stop
+
+  // TODO This design is no good if the search completes
   while (true) //(!s.is_finished())
   {
     std::string s;
     std::getline(std::cin, s); // Don't think we do anything with this?
-//    break;
+    break;
   }
+  s.stop();
+  std::cout << "Search interrupted... I will play my best move so far.\n";
 
   move m = s.get_result();
 
