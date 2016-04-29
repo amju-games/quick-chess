@@ -2,6 +2,7 @@
 // Quick chess - Jason Colman 2016 - just a fun project to keep my hand in.
 // -----------------------------------------------------------------------------
 
+#include <algorithm> // min, max
 #include <iostream>
 #include "board.h"
 #include "eval.h"
