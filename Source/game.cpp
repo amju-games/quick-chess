@@ -81,6 +81,22 @@ void game::play(int& k, evaluator& e, board& b, piece_colour& pc)
   pc = flip(pc);
 }
 
+void game::take_back(int& k, board& b, piece_colour& pc)
+{
+  if (k > 0)
+  {
+    b.undo_move();
+    k--;
+    b.print();
+    // Flip player
+    pc = flip(pc); 
+  }
+  else
+  {
+    std::cout << "Can't take back!\n";
+  }
+}
+
 void game::run()
 {
   board b;
@@ -122,18 +138,7 @@ void game::run()
     }
     else if (command == "t")
     {
-      if (k > 0)
-      {
-        b.undo_move();
-        k--;
-        b.print();
-        // Flip player
-        pc = flip(pc); 
-      }
-      else
-      {
-        std::cout << "Can't take back!\n";
-      }
+      take_back(k, b, pc);
     }
   }
 }

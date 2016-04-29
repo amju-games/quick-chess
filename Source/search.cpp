@@ -170,7 +170,7 @@ bool searcher::find_best_move() ////int max_depth, evaluator& e, board& b, piece
  
   // Cap max_depth at real absolute maximum
   m_max_depth = std::min(m_max_depth, MAX_DEPTH);
-  std::cout << "Max depth: " << m_max_depth << ".\n";
+//  std::cout << "Max depth: " << m_max_depth << ".\n";
 
   for (int depth = 1; depth <= m_max_depth; depth++)
   {
@@ -232,7 +232,7 @@ move searcher::get_result()
 
 void searcher::work()
 {
-  std::cout << "Working...\n"; 
+//  std::cout << "Working...\n"; 
   find_best_move(); 
 }
 

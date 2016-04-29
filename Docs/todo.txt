@@ -15,6 +15,13 @@ Castling, e.p.
 
 Pawn promotion
 
+Worker thread design doesn't work if tree is small and search actually completes. In this case we will still wait for a keypress. (Also we could set difficulty to a low max depth.) 
+It would be OK if we could check for a keypress but not block.
+
+Print elapsed time for each move. 
+Spinning line?
+
+
 DONE: Sort moves to optimise alpha-beta
 
 Iterative deepening
@@ -34,5 +41,5 @@ Move sorting:
 
 Table of positions with score at a depth
  - Board (hash?) is key; value is (depth, player, score). If we find a score for that position at a greater depth, we update the score.
-
+ - Zobrist hashing apparently is the way to go
 
