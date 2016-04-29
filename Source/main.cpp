@@ -2,8 +2,11 @@
 // Quick chess - Jason Colman 2016 - just a fun project to keep my hand in.
 // -----------------------------------------------------------------------------
 
-// To build:
+// To build on Mac:
 //  clang++ *.cpp -std=c++11
+//
+// On windows command prompt (with MSVC installed), something like:
+//  cl *.cpp -o qc.exe -EHsc -DWIN32
 
 #include "game.h"
 
