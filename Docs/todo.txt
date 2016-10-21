@@ -21,6 +21,8 @@ It would be OK if we could check for a keypress but not block.
 Print elapsed time for each move. 
 Spinning line?
 
+Unit testing - use CATCH?
+
 
 DONE: Sort moves to optimise alpha-beta
 
@@ -28,6 +30,8 @@ Iterative deepening
  - Only useful if we can interrupt. Also would be good to use opp thinking time - so make searching a task which can be run on a worker thread
  - So we can show best move found so far, which will change as we search deeper.
  - Store scores for board positions if we are evaluating it at a deeper depth than before.
+
+ - Terminating the recursion: search deeper if the position is very one-sided?
 
 Better evaluation
  - Threatening opp king

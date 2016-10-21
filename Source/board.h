@@ -13,19 +13,30 @@
 class board
 {
 public:
-  board();
+  board(); // resets the board
 
+  // Reset the board to game start, clear undo stack
   void reset();
 
+  // Set all squares to empty, clear undo stack
+  void clear();
+
+  // Apply the given move to the board, pushing it to the undo stack so it can
+  //  be undone.
   void do_move(const move& m);
 
   // Undo last move made, popping stack of moves
   void undo_move(); 
 
+  // Set the contents of a board position. Does not affect the undo stack, but 
+  //  rather is used BY the undo stack to change the board.
+  // Could also be used to set up an initial position.
   void set(const row_col& rc, square s);
 
+  // Get the contents of a board position
   square get(const row_col& rc) const;
 
+  // Pretty display
   void print() const;
 
 private:

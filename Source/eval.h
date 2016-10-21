@@ -37,6 +37,13 @@ class eval_material : public eval
 {
 public:
   eval_material();
+  
+  // Calculates score for player pc on board b. Uses score of:
+  //  pawn = 1
+  //  knight, bishop = 3
+  //  rook = 5
+  //  queen = 9 
+  //  king is given a very high score!
   virtual int calc_score(const board& b, piece_colour pc) const override;
 };
 

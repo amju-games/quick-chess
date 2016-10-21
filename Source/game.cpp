@@ -2,6 +2,7 @@
 // Quick chess - Jason Colman 2016 - just a fun project to keep my hand in.
 // -----------------------------------------------------------------------------
 
+#include <cassert>
 #include <iostream>
 #include "board.h"
 #include "game.h"
@@ -17,6 +18,10 @@ static void help()
 
 void game::player_move(int& k, board& b, piece_colour& pc, const std::string& move_str)
 {
+  // We are expecting move_str to look like, e.g., "e2e4"
+  // TODO Do a lot more error checking!
+  assert(move_str.size() == 4); // that's how we got here
+
   int r1 = move_str[1] - '1';
   int c1 = move_str[0] - 'a';
   int r2 = move_str[3] - '1';
@@ -69,9 +74,6 @@ void game::play(int& k, evaluator& e, board& b, piece_colour& pc)
   std::cout << "Search interrupted... I will play my best move so far.\n";
 
   move m = s.get_result();
-
-// Was this: 
-/////  find_best_move(max_depth, e, b, pc, &m);
 
   b.do_move(m);
   bool check = can_take_opponent_king(b, pc);

@@ -15,8 +15,8 @@ public:
   void run();
 
 private:
-  void player_move(int& k, board& b, piece_colour& pc, const std::string& move_str);
-  void play(int& k, evaluator& e, board& b, piece_colour& pc);
-  void take_back(int& k, board& b, piece_colour& pc);
+  void player_move(int& ply, board& b, piece_colour& pc, const std::string& move_str);
+  void play(int& ply, evaluator& e, board& b, piece_colour& pc);
+  void take_back(int& ply, board& b, piece_colour& pc);
 };
 
