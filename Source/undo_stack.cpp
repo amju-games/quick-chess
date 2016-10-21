@@ -6,6 +6,14 @@
 #include "board.h"
 #include "undo_stack.h"
 
+void undo_stack::clear()
+{
+  while(!m_undo_stack.empty())
+  {
+    m_undo_stack.pop();
+  }
+}
+
 // Push undo info for one move onto the stack
 void undo_stack::push(const undo& u) 
 { 
@@ -13,7 +21,7 @@ void undo_stack::push(const undo& u)
 }
  
 // Do the undo info at the top of the stack
-void undo_stack::do_top(board& b) 
+void undo_stack::do_top(board& b) const 
 { 
   m_undo_stack.top().do_it(b);
 }
@@ -24,7 +32,7 @@ void undo_stack::pop()
   m_undo_stack.pop();
 }
 
-void undo_sq::do_it(board& b) 
+void undo_sq::do_it(board& b) const
 { 
   b.set(m_pos, m_sq); 
 }
@@ -37,7 +45,7 @@ std::ostream& operator<<(std::ostream& os, const undo_sq& u)
   return os << u.m_pos << " -> " << (int)u.m_sq;
 }
 
-void undo::do_it(board& b)
+void undo::do_it(board& b) const
 {
   for (int i = 0; i < 4; i++)
   {

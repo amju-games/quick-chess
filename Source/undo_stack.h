@@ -24,7 +24,9 @@ struct undo_sq
   undo_sq(const row_col& p, square s) : m_pos(p), m_sq(s) {}
 
   bool is_valid() const { return m_pos.row != -1; }
-  void do_it(board& b);
+
+  // Set the contents of the board position
+  void do_it(board& b) const;
 };
 
 // Ouput, for debugging
@@ -54,7 +56,7 @@ public:
     m_undo_sqs[0] = u1; m_undo_sqs[1] = u2; m_undo_sqs[2] = u3; m_undo_sqs[3] = u4;
   }
 
-  void do_it(board& b);
+  void do_it(board& b) const;
 
   // Ouput, for debugging
   friend std::ostream& operator<<(std::ostream& os, const undo& u);
@@ -72,10 +74,13 @@ public:
   void push(const undo& u);
  
   // Do the undo info at the top of the stack
-  void do_top(board& b);
+  void do_top(board& b) const;
 
   // Pop element off the stack
   void pop();
+
+  // Empty the stack
+  void clear();
 
 private:
   std::stack<undo> m_undo_stack;
