@@ -2,3 +2,10 @@
 *.out
 *.obj
 *.exe
+Source/tests/googletest/make/gtest-all.o
+Source/tests/googletest/make/gtest.a
+Source/tests/googletest/make/gtest_main.a
+Source/tests/googletest/make/gtest_main.o
+Source/tests/googletest/make/sample1.o
+Source/tests/googletest/make/sample1_unittest
+Source/tests/googletest/make/sample1_unittest.o
