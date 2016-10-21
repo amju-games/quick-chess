@@ -3,8 +3,10 @@
 // -----------------------------------------------------------------------------
 
 // To build on Mac:
-//  clang++ *.cpp -std=c++11
+// In Source/
+//  clang++ *.cpp main/main.cpp -I. -std=c++11
 //
+
 // On windows command prompt (with MSVC installed), something like:
 //  cl *.cpp -o qc.exe -EHsc -DWIN32
 
